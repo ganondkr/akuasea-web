@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AkuaSea — Calzado Acuático para Hotelería</title>
+  <meta name="description" content="Proveedor líder de calzado acuático para hotelería en la Riviera Maya, Vallarta y Mazatlán." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:   #0d1f3c;
+      --ocean:  #1a5f7a;
+      --teal:   #2e9eb5;
+      --foam:   #d6eff6;
+      --sand:   #f4ede3;
+      --white:  #ffffff;
+      --text:   #1a2535;
+      --muted:  #6b7f96;
+      --radius: 16px;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--white); overflow-x: hidden; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 5%;
+      background: rgba(255,255,255,0.94); backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(13,31,60,0.08); transition: box-shadow .3s;
+    }
+    nav.scrolled { box-shadow: 0 4px 24px rgba(13,31,60,.10); }
+    .nav-logo img { height: 48px; object-fit: contain; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-size: .875rem; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; color: var(--navy); text-decoration: none; transition: color .2s; }
+    .nav-links a:hover { color: var(--teal); }
+    .nav-cta { background: var(--navy); color: var(--white) !important; padding: .5rem 1.25rem; border-radius: 999px; }
+    .nav-cta:hover { background: var(--ocean) !important; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--navy); border-radius: 2px; }
+    .mobile-menu { display: none; flex-direction: column; position: fixed; top: 72px; left: 0; right: 0; background: var(--white); border-bottom: 1px solid var(--foam); z-index: 99; padding: 1rem 0; }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { padding: .85rem 2rem; font-size: 1rem; font-weight: 500; color: var(--navy); text-decoration: none; border-bottom: 1px solid var(--foam); }
+    .mobile-menu a:hover { background: var(--foam); color: var(--teal); }
+
+    /* ── HERO SLIDER ── */
+    .hero {
+      position: relative; height: 100svh; min-height: 560px;
+      overflow: hidden; display: flex; align-items: center;
+    }
+    .hero-slides { position: absolute; inset: 0; }
+    .hero-slide {
+      position: absolute; inset: 0; opacity: 0;
+      transition: opacity 1s ease;
+      background-size: cover; background-position: center;
+    }
+    .hero-slide.active { opacity: 1; }
+    .hero-slide::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(100deg, rgba(13,31,60,.82) 0%, rgba(13,31,60,.45) 55%, rgba(13,31,60,.15) 100%);
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      padding: 0 8%; max-width: 700px; margin-top: 4rem;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25);
+      color: var(--foam); font-size: .78rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase;
+      padding: .35rem .9rem; border-radius: 999px; margin-bottom: 1.5rem;
+    }
+    .hero-badge::before { content: '●'; font-size: .5rem; color: var(--teal); }
+    .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.8rem,5.5vw,5rem); font-weight: 300; line-height: 1.08; color: var(--white); margin-bottom: 1.5rem; }
+    .hero h1 em { font-style: italic; color: #8ed8eb; }
+    .hero-desc { font-size: 1.05rem; line-height: 1.7; color: rgba(255,255,255,.78); max-width: 42ch; margin-bottom: 2.5rem; }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary { background: var(--white); color: var(--navy); font-weight: 600; font-size: .9rem; padding: .85rem 2rem; border-radius: 999px; text-decoration: none; transition: transform .2s, box-shadow .2s; box-shadow: 0 4px 20px rgba(0,0,0,.2); display: inline-block; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,.25); }
+    .btn-outline { border: 1.5px solid rgba(255,255,255,.45); color: var(--white); font-weight: 500; font-size: .9rem; padding: .85rem 2rem; border-radius: 999px; text-decoration: none; transition: background .2s; display: inline-block; }
+    .btn-outline:hover { background: rgba(255,255,255,.12); }
+
+    /* Hero dots */
+    .hero-dots { position: absolute; bottom: 2rem; left: 8%; z-index: 3; display: flex; gap: .5rem; }
+    .hero-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.35); cursor: pointer; transition: background .3s, transform .3s; border: none; }
+    .hero-dot.active { background: var(--white); transform: scale(1.3); }
+
+    /* Hero wave */
+    .hero-wave { position: absolute; bottom: -2px; left: 0; right: 0; z-index: 2; }
+
+    /* ── STATS ── */
+    .stats { background: var(--navy); padding: 3rem 8%; display: grid; grid-template-columns: repeat(4,1fr); gap: 2rem; }
+    .stat { text-align: center; }
+    .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 600; color: var(--teal); line-height: 1; }
+    .stat-label { font-size: .85rem; color: rgba(255,255,255,.6); margin-top: .4rem; }
+
+    /* ── SECTION COMMONS ── */
+    section { padding: 6rem 8%; }
+    .section-tag { font-size: .75rem; font-weight: 500; letter-spacing: .15em; text-transform: uppercase; color: var(--teal); margin-bottom: .75rem; }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem,3.5vw,3.2rem); font-weight: 300; line-height: 1.15; color: var(--navy); margin-bottom: 1rem; }
+    .section-title strong { font-weight: 600; }
+    .section-desc { font-size: 1rem; line-height: 1.7; color: var(--muted); max-width: 55ch; }
+
+    /* ── PRODUCT SLIDER CARD ── */
+    .pslider {
+      position: relative; border-radius: 20px; overflow: hidden;
+      background: #e8f4f8; aspect-ratio: 1;
+      cursor: pointer;
+    }
+    .pslider-img {
+      position: absolute; inset: 0; opacity: 0;
+      transition: opacity .7s ease;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .pslider-img.active { opacity: 1; }
+    .pslider-img img { width: 100%; height: 100%; object-fit: contain; padding: 1rem; }
+    .pslider-dots { position: absolute; bottom: .6rem; left: 50%; transform: translateX(-50%); display: flex; gap: .3rem; z-index: 2; }
+    .pslider-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(13,31,60,.2); transition: background .3s; border: none; cursor: pointer; }
+    .pslider-dot.active { background: var(--ocean); }
+    .pslider-arrows { position: absolute; top: 50%; transform: translateY(-50%); width: 100%; display: flex; justify-content: space-between; padding: 0 .5rem; z-index: 2; opacity: 0; transition: opacity .2s; }
+    .pslider:hover .pslider-arrows { opacity: 1; }
+    .pslider-arr { background: rgba(255,255,255,.85); border: none; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; font-size: .8rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,.15); }
+    .pslider-arr:hover { background: var(--white); }
+
+    /* ── CATEGORIES ── */
+    .categories { background: var(--sand); }
+    .cat-header { margin-bottom: 3.5rem; }
+    .cat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem; }
+    .cat-card { background: var(--white); border-radius: 20px; overflow: hidden; transition: transform .3s, box-shadow .3s; text-decoration: none; color: inherit; box-shadow: 0 2px 12px rgba(13,31,60,.07); display: block; }
+    .cat-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(13,31,60,.14); }
+    .cat-img-wrap { height: 280px; }
+    .cat-img-wrap .pslider { height: 100%; border-radius: 0; aspect-ratio: unset; }
+    .cat-body { padding: 1.5rem 2rem 2rem; }
+    .cat-name { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 600; color: var(--navy); margin-bottom: .5rem; }
+    .cat-desc { font-size: .875rem; color: var(--muted); line-height: 1.6; margin-bottom: 1rem; }
+    .cat-colors { display: flex; gap: .4rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .color-dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(255,255,255,.8); box-shadow: 0 0 0 1.5px rgba(0,0,0,.12); position: relative; cursor: default; flex-shrink: 0; }
+    .color-dot[title]:hover::after { content: attr(title); position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%); background: var(--navy); color: #fff; font-size: .7rem; padding: 2px 6px; border-radius: 4px; white-space: nowrap; pointer-events: none; z-index: 10; }
+    .cat-tag { display: inline-block; font-size: .75rem; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; background: var(--foam); color: var(--ocean); padding: .3rem .75rem; border-radius: 999px; }
+
+    /* ── PRODUCTS TABS ── */
+    .products { background: var(--white); }
+    .products-header { margin-bottom: 3rem; }
+    .product-tabs { display: flex; gap: .75rem; margin-bottom: 3rem; flex-wrap: wrap; }
+    .tab-btn { font-family: 'DM Sans', sans-serif; font-size: .875rem; font-weight: 500; letter-spacing: .04em; text-transform: uppercase; cursor: pointer; padding: .6rem 1.5rem; border-radius: 999px; border: 1.5px solid var(--foam); background: transparent; color: var(--muted); transition: all .2s; }
+    .tab-btn.active, .tab-btn:hover { background: var(--navy); color: var(--white); border-color: var(--navy); }
+    .product-panel { display: none; }
+    .product-panel.active { display: block; }
+
+    /* Model grid */
+    .model-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 1.5rem; }
+    .model-card { background: var(--sand); border-radius: var(--radius); overflow: hidden; transition: transform .3s, box-shadow .3s; }
+    .model-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(13,31,60,.12); }
+    .model-img-wrap { height: 220px; }
+    .model-img-wrap .pslider { height: 100%; border-radius: 0; aspect-ratio: unset; background: linear-gradient(135deg,#e8f4f8,#d0eaf3); }
+    .model-body { padding: 1.1rem 1.3rem 1.4rem; }
+    .model-name { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 600; color: var(--navy); margin-bottom: .25rem; }
+    .model-desc { font-size: .8rem; color: var(--muted); margin-bottom: .7rem; line-height: 1.5; }
+    .model-colors { display: flex; gap: .35rem; flex-wrap: wrap; }
+
+    /* Color variant tabs inside model */
+    .color-tabs { display: flex; gap: .4rem; flex-wrap: wrap; margin-bottom: .75rem; }
+    .color-tab { font-size: .72rem; font-weight: 500; padding: .2rem .6rem; border-radius: 999px; border: 1.5px solid #dde8ed; background: transparent; color: var(--muted); cursor: pointer; transition: all .2s; }
+    .color-tab.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+
+    /* Info banner */
+    .info-banner { display: flex; align-items: center; gap: 1rem; background: var(--foam); border-radius: var(--radius); padding: 1.25rem 1.75rem; margin-bottom: 2.5rem; }
+    .info-banner p { font-size: .9rem; color: var(--ocean); font-weight: 500; }
+
+    /* ── WHY ── */
+    .why { background: linear-gradient(135deg, var(--navy) 0%, #0f3050 100%); color: var(--white); }
+    .why .section-title { color: var(--white); }
+    .why .section-desc { color: rgba(255,255,255,.65); }
+    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3.5rem; }
+    .why-card { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); border-radius: var(--radius); padding: 2rem; transition: background .3s; }
+    .why-card:hover { background: rgba(255,255,255,.10); }
+    .why-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .why-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 600; color: var(--white); margin-bottom: .6rem; }
+    .why-card p { font-size: .9rem; color: rgba(255,255,255,.65); line-height: 1.65; }
+
+    /* ── DESTINOS ── */
+    .destinos { background: var(--foam); }
+    .destino-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; margin-top: 3rem; }
+    .destino-card { background: var(--white); border-radius: var(--radius); padding: 2rem; text-align: center; box-shadow: 0 2px 12px rgba(13,31,60,.06); }
+    .destino-icon { font-size: 2.5rem; margin-bottom: .75rem; }
+    .destino-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 600; color: var(--navy); margin-bottom: .4rem; }
+    .destino-card p { font-size: .875rem; color: var(--muted); }
+
+    /* ── CONTACT ── */
+    .contact { background: var(--white); }
+    .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    .contact-info h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem,3vw,2.8rem); font-weight: 300; color: var(--navy); line-height: 1.2; margin-bottom: 1rem; }
+    .contact-info p { font-size: 1rem; color: var(--muted); line-height: 1.7; margin-bottom: 2.5rem; }
+    .contact-item { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
+    .contact-icon { width: 48px; height: 48px; border-radius: 12px; background: var(--foam); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+    .contact-item-label { font-size: .75rem; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+    .contact-item-value { font-size: 1rem; font-weight: 500; color: var(--navy); text-decoration: none; display: block; }
+    .contact-item-value:hover { color: var(--teal); }
+    .contact-form-box { background: var(--sand); border-radius: 24px; padding: 2.5rem; }
+    .contact-form-box h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 600; color: var(--navy); margin-bottom: 1.5rem; }
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label { display: block; font-size: .8rem; font-weight: 500; color: var(--muted); margin-bottom: .45rem; text-transform: uppercase; letter-spacing: .07em; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: .85rem 1rem; background: var(--white); border: 1.5px solid #dde8ed; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: .95rem; color: var(--text); transition: border-color .2s, box-shadow .2s; outline: none; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(46,158,181,.15); }
+    .form-group textarea { resize: vertical; min-height: 110px; }
+    .btn-send { width: 100%; padding: 1rem; background: var(--navy); color: var(--white); border: none; border-radius: 999px; font-family: 'DM Sans', sans-serif; font-size: .95rem; font-weight: 600; cursor: pointer; transition: background .2s, transform .2s; }
+    .btn-send:hover { background: var(--ocean); transform: translateY(-1px); }
+
+    /* ── FOOTER ── */
+    footer { background: var(--navy); color: rgba(255,255,255,.55); padding: 3rem 8%; text-align: center; }
+    .footer-logo { margin-bottom: 1.5rem; }
+    .footer-logo img { height: 40px; filter: brightness(0) invert(1); opacity: .8; }
+    .footer-links { display: flex; justify-content: center; gap: 2rem; list-style: none; margin-bottom: 2rem; flex-wrap: wrap; }
+    .footer-links a { color: rgba(255,255,255,.5); text-decoration: none; font-size: .85rem; transition: color .2s; }
+    .footer-links a:hover { color: var(--teal); }
+    .footer-copy { font-size: .8rem; }
+
+    /* ── FLOATING ── */
+    .float-bar { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 200; display: flex; flex-direction: column; gap: .75rem; align-items: flex-end; }
+    .float-btn { display: flex; align-items: center; gap: .6rem; background: var(--white); border-radius: 999px; padding: .7rem 1.2rem; box-shadow: 0 4px 20px rgba(13,31,60,.18); text-decoration: none; font-size: .85rem; font-weight: 500; color: var(--navy); transition: transform .2s, box-shadow .2s; }
+    .float-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(13,31,60,.22); }
+    .float-btn.wa { background: #25d366; color: #fff; }
+
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .65s ease, transform .65s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 960px) {
+      .stats { grid-template-columns: repeat(2,1fr); }
+      .cat-grid { grid-template-columns: 1fr 1fr; }
+      .why-grid { grid-template-columns: 1fr; }
+      .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .destino-cards { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      section { padding: 4rem 5%; }
+      nav { padding: .85rem 5%; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .hero-content { padding: 0 5%; }
+      .cat-grid { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: repeat(2,1fr); gap: 1.5rem; padding: 2.5rem 5%; }
+      .model-grid { grid-template-columns: repeat(2,1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <a class="nav-logo" href="#inicio"><img src="images/logo.jpeg" alt="AkuaSea" /></a>
+  <ul class="nav-links">
+    <li><a href="#categorias">Productos</a></li>
+    <li><a href="#porque">¿Por qué AkuaSea?</a></li>
+    <li><a href="#destinos">Destinos</a></li>
+    <li><a href="#contacto" class="nav-cta">Contactar</a></li>
+  </ul>
+  <button class="hamburger" aria-label="Menú" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#categorias" onclick="toggleMenu()">Productos</a>
+  <a href="#porque" onclick="toggleMenu()">¿Por qué AkuaSea?</a>
+  <a href="#destinos" onclick="toggleMenu()">Destinos</a>
+  <a href="#contacto" onclick="toggleMenu()">Contactar</a>
+</div>
+
+<!-- HERO con slider automático -->
+<div class="hero" id="inicio">
+  <div class="hero-slides" id="hero-slides"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Proveedor para Hotelería · 6 años de experiencia</div>
+    <h1>Calzado acuático<br/>para <em>vivir el mar</em><br/>sin límites.</h1>
+    <p class="hero-desc">Sandalias, zapatos y tenis diseñados para el mar, cenotes, parques acuáticos y albercas. La solución definitiva para la comodidad y seguridad de los huéspedes.</p>
+    <div class="hero-actions">
+      <a href="#categorias" class="btn-primary">Ver catálogo</a>
+      <a href="#contacto" class="btn-outline">Ser distribuidor</a>
+    </div>
+  </div>
+  <div class="hero-dots" id="hero-dots"></div>
+  <svg class="hero-wave" viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,0 C240,60 480,60 720,30 C960,0 1200,0 1440,40 L1440,60 L0,60 Z" fill="#f4ede3"/>
+  </svg>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat reveal"><div class="stat-num">6+</div><div class="stat-label">Años en el mercado</div></div>
+  <div class="stat reveal"><div class="stat-num">15+</div><div class="stat-label">Modelos disponibles</div></div>
+  <div class="stat reveal"><div class="stat-num">3</div><div class="stat-label">Destinos turísticos</div></div>
+  <div class="stat reveal"><div class="stat-num">100%</div><div class="stat-label">Enfoque hotelero</div></div>
+</div>
+
+<!-- CATEGORIES -->
+<section class="categories" id="categorias">
+  <div class="cat-header reveal">
+    <div class="section-tag">Catálogo</div>
+    <h2 class="section-title">Tres líneas para <strong>cada entorno acuático</strong></h2>
+    <p class="section-desc">Cada línea está pensada para un tipo de uso, garantizando comodidad, durabilidad y estilo en cualquier entorno acuático.</p>
+  </div>
+  <div class="cat-grid">
+
+    <!-- Sandalias -->
+    <a class="cat-card reveal" href="#productos" onclick="showTab('tab-sandalias',null)">
+      <div class="cat-img-wrap">
+        <div class="pslider" data-images='["images/sandalia-merida-aqua-1.png","images/sandalia-enya-blanco-1.png","images/sandalia-bali-blanco-1.png","images/sandalia-malia-blanco-1.png","images/sandalia-softi-celeste-1.png"]' data-interval="3000"></div>
+      </div>
+      <div class="cat-body">
+        <div class="cat-name">Sandalias</div>
+        <p class="cat-desc">5 modelos distintos: Bali, Enya, Malia, Mérida y Softi. Diseño abierto y suela antiderrapante.</p>
+        <div class="cat-colors">
+          <div class="color-dot" style="background:#a8d5b5" title="Menta"></div>
+          <div class="color-dot" style="background:#1a1a1a" title="Negro"></div>
+          <div class="color-dot" style="background:#f0f0f0;border-color:#ccc" title="Blanco"></div>
+          <div class="color-dot" style="background:#2653a3" title="Azul"></div>
+          <div class="color-dot" style="background:#e84393" title="Rosa"></div>
+        </div>
+        <span class="cat-tag">5 colores · 5 modelos</span>
+      </div>
+    </a>
+
+    <!-- Zapato -->
+    <a class="cat-card reveal" href="#productos" onclick="showTab('tab-zapatos',null)">
+      <div class="cat-img-wrap">
+        <div class="pslider" data-images='["images/za-tenis-marino-1.png","images/za-tenis-gris-1.png","images/za-tenis-negro-gris-1.png","images/za-tenis-negro-rosa-1.png","images/za-tenis-azul-1.png"]' data-interval="3000"></div>
+      </div>
+      <div class="cat-body">
+        <div class="cat-name">Zapato Acuático</div>
+        <p class="cat-desc">Sin agujetas para mayor comodidad. Cobertura total del pie, ideal para cenotes y parques acuáticos.</p>
+        <div class="cat-colors">
+          <div class="color-dot" style="background:#1a1a1a" title="Negro"></div>
+          <div class="color-dot" style="background:#0a1f5e" title="Marino"></div>
+          <div class="color-dot" style="background:#1a56c4" title="Royal"></div>
+          <div class="color-dot" style="background:#e84393" title="Rosa"></div>
+          <div class="color-dot" style="background:#d42020" title="Rojo"></div>
+          <div class="color-dot" style="background:#8a8a8a" title="Gris"></div>
+        </div>
+        <span class="cat-tag">6 colores · Sin agujetas</span>
+      </div>
+    </a>
+
+    <!-- Tenis -->
+    <a class="cat-card reveal" href="#productos" onclick="showTab('tab-tenis',null)">
+      <div class="cat-img-wrap">
+        <div class="pslider" data-images='["images/tenis-negro-lado.png","images/tenis-marino-lado.png","images/tenis-rojo-delado.png","images/tenis-rosa-delado.png","images/tenis-royal-lado.png"]' data-interval="3000"></div>
+      </div>
+      <div class="cat-body">
+        <div class="cat-name">Tenis Acuático</div>
+        <p class="cat-desc">Con agujetas para ajuste personalizado. Mayor soporte para actividades dinámicas en el agua.</p>
+        <div class="cat-colors">
+          <div class="color-dot" style="background:#1a1a1a" title="Negro"></div>
+          <div class="color-dot" style="background:#0a1f5e" title="Marino"></div>
+          <div class="color-dot" style="background:#1a56c4" title="Royal"></div>
+          <div class="color-dot" style="background:#e84393" title="Rosa"></div>
+          <div class="color-dot" style="background:#d42020" title="Rojo"></div>
+          <div class="color-dot" style="background:#8a8a8a" title="Gris"></div>
+        </div>
+        <span class="cat-tag">6 colores · Con agujetas</span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- PRODUCTS DETAIL -->
+<section class="products" id="productos">
+  <div class="products-header reveal">
+    <div class="section-tag">Modelos disponibles</div>
+    <h2 class="section-title">Explora toda la <strong>colección</strong></h2>
+  </div>
+  <div class="product-tabs">
+    <button class="tab-btn active" id="btn-tab-sandalias" onclick="showTab('tab-sandalias',this)">Sandalias</button>
+    <button class="tab-btn" id="btn-tab-zapatos" onclick="showTab('tab-zapatos',this)">Zapato Acuático</button>
+    <button class="tab-btn" id="btn-tab-tenis" onclick="showTab('tab-tenis',this)">Tenis Acuático</button>
+  </div>
+
+  <!-- SANDALIAS -->
+  <div id="tab-sandalias" class="product-panel active">
+    <div class="model-grid">
+
+      <div class="model-card">
+        <div class="model-img-wrap">
+          <div class="pslider" data-images='["images/sandalia-bali-blanco-1.png","images/sandalia-bali-blanco-2.png","images/sandalia-bali-blanco-3.png","images/sandalia-bali-blanco-4.png","images/sandalia-bali-lila-1.png","images/sandalia-bali-lila-2.png","images/sandalia-bali-lila-3.png","images/sandalia-bali-lila-4.png"]' data-interval="3000"></div>
+        </div>
+        <div class="model-body">
+          <div class="model-name">Bali</div>
+          <div class="model-desc">Slide acolchada con relieve de rombos. Ligera y ultra cómoda.</div>
+          <div class="model-colors">
+            <div class="color-dot" style="background:#a8d5b5" title="Menta"></div>
+            <div class="color-dot" style="background:#1a1a1a" title="Negro"></div>
+            <div class="color-dot" style="background:#f0f0f0;border-color:#ccc" title="Blanco"></div>
+            <div class="color-dot" style="background:#2653a3" title="Azul"></div>
+            <div class="color-dot" style="background:#e84393" title="Rosa"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="model-card">
+        <div class="model-img-wrap">
+          <div class="pslider" data-images='["images/sandalia-enya-blanco-1.png","images/sandalia-enya-blanco-2.png","images/sandalia-enya-blanco-3.png","images/sandalia-enya-blanco-4.png","images/sandalia-enya-celeste-1.png","images/sandalia-enya-celeste-2.png","images/sandalia-enya-celeste-3.png","images/sandalia-enya-celeste-4.png"]' data-interval="3000"></div>
+        </div>
+        <div class="model-body">
+          <div class="model-name">Enya</div>
+          <div class="model-desc">Doble tira con hebilla ajustable. Ajuste personalizado al pie.</div>
+          <div class="model-colors">
+            <div class="color-dot" style="background:#a8d5b5" title="Menta"></div>
+            <div class="color-dot" style="background:#1a1a1a" title="Negro"></div>
+            <div class="color-dot" style="background:#f0f0f0;border-color:#ccc" title="Blanco"></div>
+            <div class="color-dot" style="background:#2653a3" title="Azul"></div>
+            <div class="color-dot" style="background:#e84393" title="Rosa"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="model-card">
+        <div class="model-img-wrap">
+          <div class="pslider" data-images='["images/sandalia-malia-blanco-1.png","images/sandalia-malia-blanco-2.png","images/sandalia-malia-blanco-3.png","images/sandalia-malia-blanco-4.png"]' data-interval="3000"></div>
+        </div>
+        <div class="model-body">
+          <div class="model-name">Malia</div>
+          <div class="model-desc">Tira única con hebilla cuadrada. Diseño moderno y minimalista.</div>
+          <div class="model-colors">
+            <div class="color-dot" style="background:#a8d5b5" title="Menta"></div>
+            <div class="color-dot" style="background:#1a1a1a" title="Negro"></div>
+            <div class="color-dot" style="background:#f0f0f0;border-color:#ccc" title="Blanco"></div>
+            <div class="color-dot" style="background:#2653a3" title="Azul"></div>
+            <div class="color-dot" style="background:#e84393" title="Rosa"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="model-card">
+        <div class="model-img-wrap">
+          <div class="pslider" data-images='["images/sandalia-merida-aqua-1.png","images/sandalia-merida-aqua-2.png","images/sandalia-merida-aqua-3.png","images/sandalia-merida-aqua-4.png","images/sandalia-merida-fucsia-1.png","images/sandalia-merida-fucsia-2.png","images/sandalia-merida-fucsia-3.png","images/sandalia-merida-fucsia-4.png"]' data-interval="3000"></div>
+        </div>
+        <div class="model-body">
+          <div class="model-name">Mérida</div>
+          <div class="model-desc">Sandalia deportiva con velcro en tobillo. Máxima sujeción acuática.</div>
+          <div class="model-colors">
+            <div class="color-dot" style="background:#a8d5b5" title="Menta"></div>
+            <div class="color-dot" style="background:#1a1a1a" title="Negro"></div>
+            <div class="color-dot" style="background:#f0f0f0;border-color:#ccc" title="Blanco"></div>
+            <div class="color-dot" style="background:#2653a3" title="Azul"></div>
+            <div class="color-dot" style="background:#e84393" title="Rosa"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="model-card">
+        <div class="model-img-wrap">
+          <div class="pslider" data-images='["images/sandalia-softi-celeste-1.png","images/sandalia-softi-celeste-2.png","images/sandalia-softi-celeste-3.png","images/sandalia-softi-celeste-4.png"]' data-interval="3000"></div>
+        </div>
+        <div class="model-body">
+          <div class="model-name">Softi</div>
+          <div class="model-desc">Tiras tubulares suaves. Plantilla ergonómica para mayor confort.</div>
+          <div class="model-colors">
+            <div class="color-dot" style="background:#a8d5b5" title="Menta"></div>
+            <div class="color-dot" style="background:#1a1a1a" title="Negro"></div>
+            <div class="color-dot" style="background:#f0f0f0;border-color:#ccc" title="Blanco"></div>
+            <div class="color-dot" style="background:#2653a3" title="Azul"></div>
+            <div class="color-dot" style="background:#e84393" title="Rosa"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ZAPATOS -->
+  <div id="tab-zapatos" class="product-panel">
+    <div class="info-banner">
+      <span style="font-size:1.3rem">💧</span>
+      <p>Sin agujetas — acceso y retiro rápido, cobertura total del pie para mar, cenotes y parques acuáticos.</p>
+    </div>
+    <div class="model-grid">
+
+      <div class="model-card">
+        <div class="model-img-wrap">
+          <div class="pslider" data-images='["images/za-tenis-negro-gris-1.png","images/za-tenis-negro-gris-2.png","images/za-tenis-negro-gris-3.png","images/za-tenis-negro-gris-4.png","images/za-tenis-negro-gris-5.png"]' data-interval="3000"></div>
+        </div>
+        <div class="model-body">
+          <div class="model-name">Negro</div>
+          <div class="model-desc">Zapato acuático · Sin agujetas · Suela antiderrapante</div>
+          <div class="model-colors"><div class="color-dot" style="background:#1a1a1a" title="Negro"></div></div>
+        </div>
+      </div>
+
+      <div class="model-card">
+        <div class="model-img-wrap">
+          <div class="pslider" data-images='["images/za-tenis-marino-1.png","images/za-tenis-marino-2.png"]' data-interval="3000"></div>
+        </div>
+        <div class="model-body">
+          <div class="model-name">Marino</div>
+          <div class="model-desc">Zapato acuático · Sin agujetas · Suela antiderrapante</div>
+          <div class="model-colors"><div class="color-dot" style="background:#0a1f5e" title="Marino"></div></div>
+        </div>
+      </div>
+
+      <div class="model-card">
+        <div class="model-img-wrap">
+          <div class="pslider" data-images='["images/za-tenis-azul-1.png"]' data-interval="3000"></div>
+        </div>
+        <div class="model-body">
+          <div class="model-name">Royal</div>
+          <div class="model-desc">Zapato acuático · Sin agujetas · Suela antiderrapante</div>
+          <div class="model-colors"><div class="color-dot" style="background:#1a56c4" title="Royal"></div></div>
+        </div>
+      </div>
+
+      <div class="model-card">
+        <div class="model-img-wrap">
+          <div class="pslider" data-images='["images/za-tenis-negro-rosa-1.png","images/za-tenis-negro-rosa-2.png","images/za-tenis-negro-rosa-3.png","images/za-tenis-negro-rosa-4.png","images/za-tenis-rosa.png"]' data-interval="3000"></div>
+        </div>
+        <div class="model-body">
+          <div class="model-name">Rosa</div>
+          <div class="model-desc">Zapato acuático · Sin agujetas · Suela antiderrapante</div>
+          <div class="model-colors"><div class="color-dot" style="background:#e84393" title="Rosa"></div></div>
+        </div>
+      </div>
+
+      <div class="model-card">
+        <div class="model-img-wrap">
+          <div class="pslider" data-images='["images/za-tenis-negro-naranja-1.png","images/za-tenis-negro-naranja-2.png"]' data-interval="3000"></div>
+        </div>
+        <div class="model-body">
+          <div class="model-name">Rojo</div>
+          <div class="model-desc">Zapato acuático · Sin agujetas · Suela antiderrapante</div>
+          <div class="model-colors"><div class="color-dot" style="background:#d42020" title="Rojo"></div></div>
+        </div>
+      </div>
+
+      <div class="model-card">
+        <div class="model-img-wrap">
+          <div class="pslider" data-images='["images/za-tenis-gris-1.png","images/za-tenis-gris-2.png","images/za-tenis-gris-3.png","images/za-tenis-gris-4.png","images/za-tenis-gris-5.png","images/za-tenis-gris-6.png","images/za-tenis-gris-7.png"]' data-interval="3000"></div>
+        </div>
+        <div class="model-body">
+          <div class="model-name">Gris</div>
+          <div class="model-desc">Zapato acuático · Sin agujetas · Suela antiderrapante</div>
+          <div class="model-colors"><div class="color-dot" style="background:#8a8a8a" title="Gris"></div></div>
+        </div>
+      </div>
+
+    </div>
+    <div style="text-align:center;margin-top:2.5rem;">
+      <a href="#contacto" class="btn-primary">Solicitar cotización mayorista →</a>
+    </div>
+  </div>
+
+  <!-- TENIS -->
+  <div id="tab-tenis" class="product-panel">
+    <div class="info-banner">
+      <span style="font-size:1.3rem">👟</span>
+      <p>Con agujetas — mayor ajuste y soporte para actividades dinámicas en el agua.</p>
+    </div>
+    <div class="model-grid">
+
+      <div class="model-card">
+        <div class="model-img-wrap">
+          <div class="pslider" data-images='["images/tenis-negro-lado.png","images/tenis-negro-frente.png","images/tenis-negro-arriba.png","images/tenis-negro-detras.png"]' data-interval="3000"></div>
+        </div>
+        <div class="model-body">
+          <div class="model-name">Negro</div>
+          <div class="model-desc">Tenis acuático · Con agujetas · Malla transpirable</div>
+          <div class="model-colors"><div class="color-dot" style="background:#1a1a1a" title="Negro"></div></div>
+        </div>
+      </div>
+
+      <div class="model-card">
+        <div class="model-img-wrap">
+          <div class="pslider" data-images='["images/tenis-marino-lado.png","images/tenis-marino-frente.png","images/tenis-marino-arriba.png","images/tenis-marino-detras.png"]' data-interval="3000"></div>
+        </div>
+        <div class="model-body">
+          <div class="model-name">Marino</div>
+          <div class="model-desc">Tenis acuático · Con agujetas · Malla transpirable</div>
+          <div class="model-colors"><div class="color-dot" style="background:#0a1f5e" title="Marino"></div></div>
+        </div>
+      </div>
+
+      <div class="model-card">
+        <div class="model-img-wrap">
+          <div class="pslider" data-images='["images/tenis-royal-lado.png","images/tenis-royal-frente.png","images/tenis-royal-arriba.png","images/tenis-royal-detras.png"]' data-interval="3000"></div>
+        </div>
+        <div class="model-body">
+          <div class="model-name">Royal</div>
+          <div class="model-desc">Tenis acuático · Con agujetas · Malla transpirable</div>
+          <div class="model-colors"><div class="color-dot" style="background:#1a56c4" title="Royal"></div></div>
+        </div>
+      </div>
+
+      <div class="model-card">
+        <div class="model-img-wrap">
+          <div class="pslider" data-images='["images/tenis-rosa-delado.png","images/tenis-rosa-frente.png","images/tenis-rosa-arriba.png","images/tenis-rosa-lado.png"]' data-interval="3000"></div>
+        </div>
+        <div class="model-body">
+          <div class="model-name">Rosa</div>
+          <div class="model-desc">Tenis acuático · Con agujetas · Malla transpirable</div>
+          <div class="model-colors"><div class="color-dot" style="background:#e84393" title="Rosa"></div></div>
+        </div>
+      </div>
+
+      <div class="model-card">
+        <div class="model-img-wrap">
+          <div class="pslider" data-images='["images/tenis-rojo-delado.png","images/tenis-rojo-delante.png","images/tenis-rojo-arriba.png","images/tenis-rojo-detras.png"]' data-interval="3000"></div>
+        </div>
+        <div class="model-body">
+          <div class="model-name">Rojo</div>
+          <div class="model-desc">Tenis acuático · Con agujetas · Malla transpirable</div>
+          <div class="model-colors"><div class="color-dot" style="background:#d42020" title="Rojo"></div></div>
+        </div>
+      </div>
+
+    </div>
+    <div style="text-align:center;margin-top:2.5rem;">
+      <a href="#contacto" class="btn-primary">Solicitar cotización mayorista →</a>
+    </div>
+  </div>
+
+</section>
+
+<!-- WHY -->
+<section class="why" id="porque">
+  <div class="reveal">
+    <div class="section-tag" style="color:#8ed8eb">Por qué elegirnos</div>
+    <h2 class="section-title">La elección de los <strong>mejores hoteles</strong></h2>
+    <p class="section-desc">Seis años abasteciendo a la zona hotelera más importante de México.</p>
+  </div>
+  <div class="why-grid">
+    <div class="why-card reveal"><div class="why-icon">🌊</div><h3>Diseño para el agua</h3><p>Materiales que resisten cloro, sal y humedad constante. Secado rápido y durabilidad comprobada en entornos hoteleros de alto tráfico.</p></div>
+    <div class="why-card reveal"><div class="why-icon">🏨</div><h3>Solución para hotelería</h3><p>Entendemos las necesidades operativas de los hoteles: variedad de tallas, colores institucionales y pedidos a escala.</p></div>
+    <div class="why-card reveal"><div class="why-icon">🛡️</div><h3>Seguridad y confort</h3><p>Suela antiderrapante que reduce accidentes en albercas y superficies mojadas, protegiendo a los huéspedes en todo momento.</p></div>
+    <div class="why-card reveal"><div class="why-icon">📦</div><h3>Entrega en destino</h3><p>Distribución directa en Riviera Maya, Puerto Vallarta y Mazatlán. Logística optimizada para no interrumpir las operaciones del hotel.</p></div>
+  </div>
+</section>
+
+<!-- DESTINOS -->
+<section class="destinos" id="destinos">
+  <div class="reveal" style="text-align:center;max-width:600px;margin:0 auto 1rem;">
+    <div class="section-tag">Cobertura nacional</div>
+    <h2 class="section-title">Presentes en los <strong>principales destinos</strong></h2>
+  </div>
+  <div class="destino-cards">
+    <div class="destino-card reveal"><div class="destino-icon">🐠</div><h3>Riviera Maya</h3><p>Operaciones activas en toda la zona hotelera. Entrega rápida y soporte local.</p></div>
+    <div class="destino-card reveal"><div class="destino-icon">🌅</div><h3>Puerto Vallarta</h3><p>Distribución a hoteles boutique y grandes cadenas en el Pacífico mexicano.</p></div>
+    <div class="destino-card reveal"><div class="destino-icon">⚓</div><h3>Mazatlán</h3><p>Presencia consolidada en el malecón y zona dorada de Mazatlán.</p></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contacto">
+  <div class="contact-inner">
+    <div class="contact-info reveal">
+      <div class="section-tag">Contacto</div>
+      <h2>¿Listo para ofrecer a tus huéspedes la mejor experiencia?</h2>
+      <p>Escríbenos para conocer precios mayoristas, muestras y disponibilidad. Respondemos en menos de 24 horas.</p>
+      <div class="contact-item">
+        <div class="contact-icon">📞</div>
+        <div><div class="contact-item-label">Teléfono / WhatsApp</div><a href="tel:+523310887172" class="contact-item-value">+52 331 088 7172</a></div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">✉️</div>
+        <div><div class="contact-item-label">Correo electrónico</div><a href="mailto:juanmanueldenizc@gmail.com" class="contact-item-value">juanmanueldenizc@gmail.com</a></div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <div><div class="contact-item-label">Zona de operación</div><span class="contact-item-value">Riviera Maya · Vallarta · Mazatlán</span></div>
+      </div>
+    </div>
+    <div class="contact-form-box reveal">
+      <h3>Envíanos un mensaje</h3>
+      <div class="form-group"><label>Nombre completo</label><input type="text" id="f-name" placeholder="Tu nombre o empresa" /></div>
+      <div class="form-group"><label>Correo electrónico</label><input type="email" id="f-email" placeholder="correo@empresa.com" /></div>
+      <div class="form-group"><label>Teléfono</label><input type="tel" id="f-phone" placeholder="+52 000 000 0000" /></div>
+      <div class="form-group"><label>¿Qué línea te interesa?</label>
+        <select id="f-product">
+          <option value="">Selecciona una opción</option>
+          <option>Sandalias</option><option>Zapato Acuático</option>
+          <option>Tenis Acuático</option><option>Catálogo completo</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Mensaje</label><textarea id="f-msg" placeholder="Cuéntanos sobre tu hotel y las cantidades que necesitas…"></textarea></div>
+      <button class="btn-send" onclick="sendWhatsApp()">Enviar por WhatsApp →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo"><img src="images/logo.jpeg" alt="AkuaSea" /></div>
+  <ul class="footer-links">
+    <li><a href="#categorias">Productos</a></li>
+    <li><a href="#porque">¿Por qué AkuaSea?</a></li>
+    <li><a href="#destinos">Destinos</a></li>
+    <li><a href="tel:+523310887172">+52 331 088 7172</a></li>
+    <li><a href="mailto:juanmanueldenizc@gmail.com">juanmanueldenizc@gmail.com</a></li>
+  </ul>
+  <p class="footer-copy">© 2025 AkuaSea — Todos los derechos reservados.<br/>Calzado acuático para hotelería · Riviera Maya, México</p>
+</footer>
+
+<!-- FLOATING -->
+<div class="float-bar">
+  <a class="float-btn wa" href="https://wa.me/523310887172?text=Hola%2C%20me%20interesa%20conocer%20el%20cat%C3%A1logo%20de%20AkuaSea" target="_blank" rel="noopener">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    WhatsApp
+  </a>
+  <a class="float-btn" href="tel:+523310887172">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.82a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"></path></svg>
+    Llamar
+  </a>
+</div>
+
+<script>
+// ── SLIDER ENGINE ──
+function initSlider(el) {
+  const images = JSON.parse(el.dataset.images || '[]');
+  const interval = parseInt(el.dataset.interval || '3000');
+  if (!images.length) return;
+
+  // Build slides
+  images.forEach((src, i) => {
+    const div = document.createElement('div');
+    div.className = 'pslider-img' + (i === 0 ? ' active' : '');
+    const img = document.createElement('img');
+    img.src = src; img.alt = ''; img.loading = 'lazy';
+    div.appendChild(img);
+    el.appendChild(div);
+  });
+
+  // Dots
+  if (images.length > 1) {
+    const dotsWrap = document.createElement('div');
+    dotsWrap.className = 'pslider-dots';
+    images.forEach((_, i) => {
+      const d = document.createElement('button');
+      d.className = 'pslider-dot' + (i === 0 ? ' active' : '');
+      d.onclick = (e) => { e.preventDefault(); e.stopPropagation(); goTo(i); };
+      dotsWrap.appendChild(d);
+    });
+    el.appendChild(dotsWrap);
+
+    // Arrows
+    const arrows = document.createElement('div');
+    arrows.className = 'pslider-arrows';
+    arrows.innerHTML = `
+      <button class="pslider-arr" onclick="event.preventDefault();event.stopPropagation()">&#8592;</button>
+      <button class="pslider-arr" onclick="event.preventDefault();event.stopPropagation()">&#8594;</button>
+    `;
+    arrows.children[0].addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); prev(); });
+    arrows.children[1].addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); next(); });
+    el.appendChild(arrows);
+  }
+
+  let current = 0;
+  const slides = el.querySelectorAll('.pslider-img');
+  const dots = el.querySelectorAll('.pslider-dot');
+
+  function goTo(idx) {
+    slides[current].classList.remove('active');
+    dots[current]?.classList.remove('active');
+    current = (idx + images.length) % images.length;
+    slides[current].classList.add('active');
+    dots[current]?.classList.add('active');
+  }
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+
+  // Auto-advance
+  let timer = setInterval(next, interval);
+  el.addEventListener('mouseenter', () => clearInterval(timer));
+  el.addEventListener('mouseleave', () => { timer = setInterval(next, interval); });
+}
+
+// ── HERO SLIDER ──
+const heroImages = [
+  'images/clean-banner-2.jpeg',
+  'images/clean-banner-3.jpeg',
+  'images/banner-sandalia-merida-1.jpeg',
+  'images/banner-sandalia-merida-2.jpeg',
+  'images/banner-zapato-tenis-azul.jpeg',
+  'images/banner-zapato-tenis-azul-2.jpeg',
+  'images/banner-zapato-tenis-rosa.jpeg',
+  'images/banner-zapato-tenis-rosa-2.jpeg',
+  'images/banner-zapato-tenis-gris.jpeg',
+  'images/banner-zapato-tenis-gris-2.jpeg',
+];
+
+const heroSlides = document.getElementById('hero-slides');
+const heroDots = document.getElementById('hero-dots');
+let heroCurrent = 0;
+let heroTimer;
+
+heroImages.forEach((src, i) => {
+  const slide = document.createElement('div');
+  slide.className = 'hero-slide' + (i === 0 ? ' active' : '');
+  slide.style.backgroundImage = `url('${src}')`;
+  heroSlides.appendChild(slide);
+
+  const dot = document.createElement('button');
+  dot.className = 'hero-dot' + (i === 0 ? ' active' : '');
+  dot.onclick = () => heroGoTo(i);
+  heroDots.appendChild(dot);
+});
+
+function heroGoTo(idx) {
+  const slides = heroSlides.querySelectorAll('.hero-slide');
+  const dots = heroDots.querySelectorAll('.hero-dot');
+  slides[heroCurrent].classList.remove('active');
+  dots[heroCurrent].classList.remove('active');
+  heroCurrent = (idx + heroImages.length) % heroImages.length;
+  slides[heroCurrent].classList.add('active');
+  dots[heroCurrent].classList.add('active');
+}
+function heroNext() { heroGoTo(heroCurrent + 1); }
+
+heroTimer = setInterval(heroNext, 3000);
+
+// ── INIT ALL PRODUCT SLIDERS ──
+document.querySelectorAll('.pslider').forEach(initSlider);
+
+// ── TABS ──
+function showTab(id, btn) {
+  document.querySelectorAll('.product-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const activBtn = btn || document.getElementById('btn-' + id);
+  if (activBtn) activBtn.classList.add('active');
+}
+
+// ── NAV SCROLL ──
+window.addEventListener('scroll', () =>
+  document.getElementById('main-nav').classList.toggle('scrolled', window.scrollY > 30)
+);
+
+// ── MOBILE MENU ──
+function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('open'); }
+
+// ── SCROLL REVEAL ──
+const observer = new IntersectionObserver(
+  entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+  { threshold: 0.1 }
+);
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── WHATSAPP FORM ──
+function sendWhatsApp() {
+  const name = document.getElementById('f-name').value || '';
+  const email = document.getElementById('f-email').value || '';
+  const phone = document.getElementById('f-phone').value || '';
+  const product = document.getElementById('f-product').value || '';
+  const msg = document.getElementById('f-msg').value || '';
+  const text = encodeURIComponent(`Hola AkuaSea! Me interesa su catálogo.\n\nNombre: ${name}\nCorreo: ${email}\nTeléfono: ${phone}\nProducto: ${product}\nMensaje: ${msg}`);
+  window.open(`https://wa.me/523310887172?text=${text}`, '_blank');
+}
+</script>
+</body>
+</html>
