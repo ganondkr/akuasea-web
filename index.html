@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AkuaSea — Calzado Acuático para Hotelería</title>
+  <title>AkuaSea — Calzado y Ropa Acuática para Hotelería</title>
   <meta name="description" content="Proveedor líder de calzado acuático para hotelería en la Riviera Maya, Vallarta y Mazatlán." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -127,7 +127,7 @@
     /* ── CATEGORIES ── */
     .categories { background: var(--sand); }
     .cat-header { margin-bottom: 3.5rem; }
-    .cat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem; }
+    .cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 2rem; }
     .cat-card { background: var(--white); border-radius: 20px; overflow: hidden; transition: transform .3s, box-shadow .3s; text-decoration: none; color: inherit; box-shadow: 0 2px 12px rgba(13,31,60,.07); display: block; }
     .cat-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(13,31,60,.14); }
     .cat-img-wrap { height: 280px; }
@@ -274,8 +274,8 @@
   <div class="hero-slides" id="hero-slides"></div>
   <div class="hero-content">
     <div class="hero-badge">Proveedor para Hotelería · 6 años de experiencia</div>
-    <h1>Calzado acuático<br/>para <em>vivir el mar</em><br/>sin límites.</h1>
-    <p class="hero-desc">Sandalias, zapatos y tenis diseñados para el mar, cenotes, parques acuáticos y albercas. La solución definitiva para la comodidad y seguridad de los huéspedes.</p>
+    <h1>Calzado y ropa acuática<br/>para <em>vivir el mar</em><br/>sin límites.</h1>
+    <p class="hero-desc">Sandalias, zapatos, tenis y ropa de playa diseñados para el mar, cenotes, parques acuáticos y albercas. La solución definitiva para la comodidad y estilo de los huéspedes.</p>
     <div class="hero-actions">
       <a href="#categorias" class="btn-primary">Ver catálogo</a>
       <a href="#contacto" class="btn-outline">Ser distribuidor</a>
@@ -299,8 +299,8 @@
 <section class="categories" id="categorias">
   <div class="cat-header reveal">
     <div class="section-tag">Catálogo</div>
-    <h2 class="section-title">Tres líneas para <strong>cada entorno acuático</strong></h2>
-    <p class="section-desc">Cada línea está pensada para un tipo de uso, garantizando comodidad, durabilidad y estilo en cualquier entorno acuático.</p>
+    <h2 class="section-title">Cinco líneas para <strong>cada entorno acuático</strong></h2>
+    <p class="section-desc">Calzado y ropa pensados para cada tipo de uso, garantizando comodidad, durabilidad y estilo en cualquier entorno acuático.</p>
   </div>
   <div class="cat-grid">
 
@@ -350,7 +350,7 @@
       </div>
       <div class="cat-body">
         <div class="cat-name">Tenis Acuático</div>
-        <p class="cat-desc">Sin agujetas para mayor comodidad. Cobertura total del pie, ideal para cenotes y parques acuáticos.</p>
+        <p class="cat-desc">Con agujetas para ajuste personalizado. Mayor soporte para actividades dinámicas en el agua.</p>
         <div class="cat-colors">
           <div class="color-dot" style="background:#1a1a1a" title="Negro"></div>
           <div class="color-dot" style="background:#0a1f5e" title="Marino"></div>
@@ -360,6 +360,38 @@
           <div class="color-dot" style="background:#8a8a8a" title="Gris"></div>
         </div>
         <span class="cat-tag">6 colores · Con agujetas</span>
+      </div>
+    </a>
+
+    <!-- Falda -->
+    <a class="cat-card reveal" href="#productos" onclick="showTab('tab-falda',null)">
+      <div class="cat-img-wrap">
+        <div class="pslider" data-images='["images/falda-clean.jpeg"]' data-interval="3000"></div>
+      </div>
+      <div class="cat-body">
+        <div class="cat-name">Falda de Playa</div>
+        <p class="cat-desc">Falda acuática con short interior. Diseño ligero y funcional para la playa, alberca y cenote.</p>
+        <div class="cat-colors">
+          <div class="color-dot" style="background:#0a1f5e" title="Marino"></div>
+          <div class="color-dot" style="background:#e84393" title="Rosa / Fucsia"></div>
+          <div class="color-dot" style="background:#d42020" title="Rojo"></div>
+        </div>
+        <span class="cat-tag">3 colores · Tallas S – 2XL</span>
+      </div>
+    </a>
+
+    <!-- Bikini -->
+    <a class="cat-card reveal" href="#productos" onclick="showTab('tab-bikini',null)">
+      <div class="cat-img-wrap">
+        <div class="pslider" data-images='["images/bikini-clean.jpeg"]' data-interval="3000"></div>
+      </div>
+      <div class="cat-body">
+        <div class="cat-name">Bikini</div>
+        <p class="cat-desc">Bikini halter con amarre ajustable en top y bottom. Comodidad y estilo en el agua.</p>
+        <div class="cat-colors">
+          <div class="color-dot" style="background:#e84393" title="Rosa / Fucsia"></div>
+        </div>
+        <span class="cat-tag">Rosa · Tallas CH – 2XL</span>
       </div>
     </a>
 
@@ -376,6 +408,8 @@
     <button class="tab-btn active" id="btn-tab-sandalias" onclick="showTab('tab-sandalias',this)">Sandalias</button>
     <button class="tab-btn" id="btn-tab-zapatos" onclick="showTab('tab-zapatos',this)">Zapato Acuático</button>
     <button class="tab-btn" id="btn-tab-tenis" onclick="showTab('tab-tenis',this)">Tenis Acuático</button>
+    <button class="tab-btn" id="btn-tab-falda" onclick="showTab('tab-falda',this)">Falda de Playa</button>
+    <button class="tab-btn" id="btn-tab-bikini" onclick="showTab('tab-bikini',this)">Bikini</button>
   </div>
 
   <!-- SANDALIAS -->
@@ -619,6 +653,72 @@
     </div>
   </div>
 
+  <!-- FALDA -->
+  <div id="tab-falda" class="product-panel">
+    <div class="info-banner">
+      <span style="font-size:1.3rem">👙</span>
+      <p>Falda acuática con short interior — ligera, cómoda y con estilo para playa, alberca y cenote. Tallas S a 2XL.</p>
+    </div>
+    <div class="model-grid" style="grid-template-columns: repeat(auto-fill, minmax(320px,1fr));">
+      <div class="model-card">
+        <div class="model-img-wrap" style="height:280px;">
+          <div class="pslider" style="height:100%;border-radius:0;aspect-ratio:unset;background:#f0f4f8;">
+            <div class="pslider-img active"><img src="images/falda-clean.jpeg" alt="Falda de Playa" style="width:100%;height:100%;object-fit:cover;padding:0;" /></div>
+          </div>
+        </div>
+        <div class="model-body">
+          <div class="model-name">Falda de Playa</div>
+          <div class="model-desc">Short interior integrado · Tela de secado rápido · Suela antiderrapante</div>
+          <div class="model-colors" style="gap:.5rem;margin-bottom:.75rem;">
+            <div class="color-dot" style="background:#0a1f5e;width:22px;height:22px" title="Marino"></div>
+            <div class="color-dot" style="background:#e84393;width:22px;height:22px" title="Fucsia / Rosa"></div>
+            <div class="color-dot" style="background:#d42020;width:22px;height:22px" title="Rojo"></div>
+          </div>
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+            <span class="cat-tag">Marino</span>
+            <span class="cat-tag">Fucsia</span>
+            <span class="cat-tag">Rojo</span>
+            <span class="cat-tag" style="background:var(--navy);color:#fff;">Tallas S – 2XL</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:2.5rem;">
+      <a href="#contacto" class="btn-primary">Solicitar cotización mayorista →</a>
+    </div>
+  </div>
+
+  <!-- BIKINI -->
+  <div id="tab-bikini" class="product-panel">
+    <div class="info-banner">
+      <span style="font-size:1.3rem">🌊</span>
+      <p>Bikini halter con amarre ajustable en top y bottom. Tallas CH a 2XL en color Rosa / Fucsia.</p>
+    </div>
+    <div class="model-grid" style="grid-template-columns: repeat(auto-fill, minmax(320px,1fr));">
+      <div class="model-card">
+        <div class="model-img-wrap" style="height:280px;">
+          <div class="pslider" style="height:100%;border-radius:0;aspect-ratio:unset;background:#fce8f0;">
+            <div class="pslider-img active"><img src="images/bikini-clean.jpeg" alt="Bikini" style="width:100%;height:100%;object-fit:cover;padding:0;" /></div>
+          </div>
+        </div>
+        <div class="model-body">
+          <div class="model-name">Bikini</div>
+          <div class="model-desc">Top halter ajustable · Bottom con lazos laterales · Color Rosa / Fucsia</div>
+          <div class="model-colors" style="gap:.5rem;margin-bottom:.75rem;">
+            <div class="color-dot" style="background:#e84393;width:22px;height:22px" title="Rosa / Fucsia"></div>
+          </div>
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+            <span class="cat-tag">Rosa / Fucsia</span>
+            <span class="cat-tag" style="background:var(--navy);color:#fff;">Tallas CH – 2XL</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:2.5rem;">
+      <a href="#contacto" class="btn-primary">Solicitar cotización mayorista →</a>
+    </div>
+  </div>
+
 </section>
 
 <!-- WHY -->
@@ -643,9 +743,21 @@
     <h2 class="section-title">Presentes en los <strong>principales destinos</strong></h2>
   </div>
   <div class="destino-cards">
-    <div class="destino-card reveal"><div class="destino-icon">🐠</div><h3>Riviera Maya</h3><p>Operaciones activas en toda la zona hotelera. Entrega rápida y soporte local.</p></div>
-    <div class="destino-card reveal"><div class="destino-icon">🌅</div><h3>Puerto Vallarta</h3><p>Distribución a hoteles boutique y grandes cadenas en el Pacífico mexicano.</p></div>
-    <div class="destino-card reveal"><div class="destino-icon">⚓</div><h3>Mazatlán</h3><p>Presencia consolidada en el malecón y zona dorada de Mazatlán.</p></div>
+    <div class="destino-card reveal">
+      <div class="destino-icon">🐠🏖️🏛️</div>
+      <h3>Riviera Maya</h3>
+      <p>Operaciones activas en toda la zona hotelera. Entrega rápida y soporte local.</p>
+    </div>
+    <div class="destino-card reveal">
+      <div class="destino-icon">🌅🐟🧜‍♀️</div>
+      <h3>Puerto Vallarta</h3>
+      <p>Distribución a hoteles boutique y grandes cadenas en el Pacífico mexicano.</p>
+    </div>
+    <div class="destino-card reveal">
+      <div class="destino-icon">⚓🦌🐴</div>
+      <h3>Mazatlán</h3>
+      <p>Presencia consolidada en el malecón y zona dorada de Mazatlán.</p>
+    </div>
   </div>
 </section>
 
@@ -678,7 +790,8 @@
         <select id="f-product">
           <option value="">Selecciona una opción</option>
           <option>Sandalias</option><option>Zapato Acuático</option>
-          <option>Tenis Acuático</option><option>Catálogo completo</option>
+          <option>Tenis Acuático</option><option>Falda de Playa</option>
+          <option>Bikini</option><option>Catálogo completo</option>
         </select>
       </div>
       <div class="form-group"><label>Mensaje</label><textarea id="f-msg" placeholder="Cuéntanos sobre tu hotel y las cantidades que necesitas…"></textarea></div>
