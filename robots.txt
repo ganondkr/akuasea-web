@@ -1,4 +1,42 @@
+# AkuaSea -- robots.txt
+# Objetivo: maxima visibilidad, tanto en buscadores tradicionales como en
+# motores de respuesta de IA. No se bloquea ningun rastreador -- se
+# permite explicitamente cada uno conocido para evitar caer por accidente
+# en una regla generica restrictiva.
+
 User-agent: *
+Allow: /
+
+# --- Rastreadores de busqueda en tiempo real de IA (citan con enlace) ---
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+# --- Rastreadores de entrenamiento de IA (permitidos: mas visibilidad) ---
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: CCBot
 Allow: /
 
 Sitemap: https://akuasea.com/sitemap.xml
